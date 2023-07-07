@@ -1,0 +1,27 @@
+version: "3.7"
+services:
+  app:
+    build:
+      context: ./infrastructure/docker/go
+    env_file:
+      - env/dev/.env
+    ports:
+      - "9000:9000"
+    volumes:
+      - ".:/code"
+      - "cache:/go/pkg/mod" # Docker volume to store vendors (modules)
+
+  mysql:
+    image: "mariadb:lts"
+    volumes:
+      - ./infrastructure/docker/mysql/data:/var/lib/mysql
+      - ./infrastructure/docker/mysql/sql:/docker-entrypoint-initdb.d/
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MARIADB_ROOT_PASSWORD=root
+    ports:
+      - "3306:3306"
+
+volumes:
+  cache:
+  mysql:
