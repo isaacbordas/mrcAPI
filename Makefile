@@ -6,6 +6,7 @@ SHELL := /bin/bash
 export LOCAL_PKG_PREFIX=mrcAPI
 export GOFLAGS=-mod=vendor
 
+WIRE_PATH=$(HOME)/go/bin/
 BIN=$(CURDIR)/bin
 VCS_REF=`git rev-parse --short HEAD`
 BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"`
@@ -13,7 +14,7 @@ BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"`
 go-wire:
 	@echo "generating wire files ..."
 	@find $(CURDIR) -name "wire_gen.go" -not -path "$(CURDIR)/vendor/*" -delete
-	@go run github.com/google/wire/cmd/wire ./...
+	@$(WIRE_PATH)wire ./...
 	@echo "... done"
 
 go-install-vendor: ## Install dependencies using vendoring
