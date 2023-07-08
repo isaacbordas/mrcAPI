@@ -16,3 +16,7 @@ func NewPlatformService(r infrastructure.PlatformMysqlRepository) Platform {
 func (p Platform) GetPlatforms() ([]platform.Platform, error) {
 	return p.r.GetAllPlatforms()
 }
+
+func (p Platform) GetPlatform(slug string) (platform.Platform, error) {
+	return p.r.GetPlatformBySlug(slug)
+}

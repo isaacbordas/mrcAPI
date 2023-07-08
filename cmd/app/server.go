@@ -3,41 +3,31 @@ package main
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"mrcAPI/pkg/platform/wire"
-	"mrcAPI/pkg/system/config"
-	"net/http"
+	"github.com/kelseyhightower/envconfig"
+	"mrcAPI/cmd/app/routes"
 )
 
-func main() {
-	host, errHost := config.GoDotEnvVariable("HOST")
-	if errHost != nil {
-		panic(errHost)
-	}
+type ServerConfig struct {
+	Host string `default:"0.0.0.0" envconfig:"HOST"`
+	Port string `default:"9000" envconfig:"PORT"`
+}
 
-	port, errPort := config.GoDotEnvVariable("PORT")
-	if errPort != nil {
-		panic(errPort)
-	}
+func NewServerConfig() ServerConfig {
+	cfg := ServerConfig{}
+	envconfig.MustProcess("", &cfg)
+	return cfg
+}
+
+func main() {
+	cfg := NewServerConfig()
 
 	router := gin.Default()
-	router.GET("/platforms", getPlatforms)
+	router.GET("/platforms", routes.GetPlatforms)
+	router.GET("/platform/:slug", routes.GetPlatformBySlug)
+	router.GET("/games", routes.GetGames)
 
-	errRun := router.Run(fmt.Sprintf("%s:%s", host, port))
+	errRun := router.Run(fmt.Sprintf("%s:%s", cfg.Host, cfg.Port))
 	if errRun != nil {
 		panic(errRun)
 	}
-}
-
-func getPlatforms(c *gin.Context) {
-	plat, err := wire.ProvidePlatform()
-	if err != nil {
-		panic(err)
-	}
-
-	platforms, errPlat := plat.GetPlatforms()
-	if errPlat != nil {
-		c.JSON(http.StatusBadRequest, errPlat.Error())
-	}
-
-	c.JSON(http.StatusOK, platforms)
 }
