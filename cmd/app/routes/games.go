@@ -19,3 +19,18 @@ func GetGames(c *gin.Context) {
 
 	c.JSON(http.StatusOK, games)
 }
+
+func GetGameBySlug(c *gin.Context) {
+	game, err := wire.ProvideGame()
+	if err != nil {
+		panic(err)
+	}
+
+	slug := c.Param("slug")
+	games, errGames := game.GetGame(slug)
+	if errGames != nil {
+		c.JSON(http.StatusBadRequest, errGames.Error())
+	}
+
+	c.JSON(http.StatusOK, games)
+}

@@ -2,6 +2,7 @@ package game
 
 type IGame interface {
 	GetGames() ([]Game, error)
+	GetGame(slug string) (Game, error)
 }
 
 type Game struct {

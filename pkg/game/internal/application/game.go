@@ -16,3 +16,7 @@ func NewGameService(r infrastructure.GameMysqlRepository) Game {
 func (g Game) GetGames() ([]game.Game, error) {
 	return g.r.GetAllGames()
 }
+
+func (g Game) GetGame(slug string) (game.Game, error) {
+	return g.r.GetGameBySlug(slug)
+}

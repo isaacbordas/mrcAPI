@@ -25,6 +25,7 @@ func main() {
 	router.GET("/platforms", routes.GetPlatforms)
 	router.GET("/platform/:slug", routes.GetPlatformBySlug)
 	router.GET("/games", routes.GetGames)
+	router.GET("/game/:slug", routes.GetGameBySlug)
 
 	errRun := router.Run(fmt.Sprintf("%s:%s", cfg.Host, cfg.Port))
 	if errRun != nil {
