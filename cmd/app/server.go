@@ -33,9 +33,11 @@ func getPlatforms(c *gin.Context) {
 	if err != nil {
 		panic(err)
 	}
+
 	platforms, errPlat := plat.GetPlatforms()
 	if errPlat != nil {
-		c.JSON(http.StatusBadRequest, nil)
+		c.JSON(http.StatusBadRequest, errPlat.Error())
 	}
+
 	c.JSON(http.StatusOK, platforms)
 }

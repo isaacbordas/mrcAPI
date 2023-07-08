@@ -5,6 +5,7 @@ type IPlatform interface {
 }
 
 type Platform struct {
+	UUID string `json:"uuid"`
 	Name string `json:"name"`
 	Slug string `json:"slug"`
 }

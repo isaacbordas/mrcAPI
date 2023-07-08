@@ -6,24 +6,20 @@ import (
 	"github.com/google/wire"
 	"mrcAPI/pkg/platform"
 	"mrcAPI/pkg/platform/internal/application"
-	"mrcAPI/pkg/platform/internal/domain"
 	"mrcAPI/pkg/platform/internal/infrastructure"
 	"mrcAPI/pkg/system"
 )
 
-var mysqlRepository = wire.NewSet(infrastructure.NewPlatformMysqlRepository, wire.Bind(new(domain.PlatformRepository), new(infrastructure.PlatformMysqlRepository)))
-
-func providePlatformMysqlRepository() (domain.PlatformRepository, error) {
+func providePlatformMysqlRepository() (infrastructure.PlatformMysqlRepository, error) {
 	panic(wire.Build(
 		system.ProvideMySQL,
-		mysqlRepository,
+		infrastructure.NewPlatformMysqlRepository,
 	))
 }
 
 func ProvidePlatform() (platform.IPlatform, error) {
 	panic(wire.Build(
 		providePlatformMysqlRepository,
-		domain.NewPlatformService,
 		application.NewPlatformService,
 		wire.Bind(new(platform.IPlatform), new(application.Platform)),
 	))

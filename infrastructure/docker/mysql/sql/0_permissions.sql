@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS myretrocollection CHARACTER SET utf8;
+CREATE DATABASE IF NOT EXISTS myretrocollectiondb CHARACTER SET utf8;
 
-CREATE USER myretrousern@'%' IDENTIFIED BY 'root';
+CREATE USER myretrouser@'%' IDENTIFIED BY 'root';
 
-GRANT ALL PRIVILEGES ON myretrocollection.* TO myretrousern@'%';
+GRANT ALL PRIVILEGES ON myretrocollectiondb.* TO myretrouser@'%';

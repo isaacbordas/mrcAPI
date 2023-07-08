@@ -4,13 +4,17 @@ import (
 	"database/sql"
 	"fmt"
 	"net/url"
+	"reflect"
 
 	"github.com/go-sql-driver/mysql"
 )
 
 func NewDB(cfg DBConfig) (*sql.DB, error) {
 	driverName := fmt.Sprintf("%s-%s", "mysql", cfg.DBName)
-	sql.Register(driverName, &mysql.MySQLDriver{})
+	drivers := sql.Drivers()
+	if !isDriverRegistered(drivers, driverName) {
+		sql.Register(driverName, &mysql.MySQLDriver{})
+	}
 	return sql.Open(driverName, dBConnInfo(cfg))
 }
 
@@ -31,4 +35,16 @@ func dBConnInfo(cfg DBConfig) string {
 
 	return fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?%s",
 		cfg.User, cfg.Password, cfg.Host, cfg.Port, cfg.DBName, dsnConfig.Encode())
+}
+
+func isDriverRegistered(arrayType interface{}, item interface{}) bool {
+	arr := reflect.ValueOf(arrayType)
+
+	for i := 0; i < arr.Len(); i++ {
+		if arr.Index(i).Interface() == item {
+			return true
+		}
+	}
+
+	return false
 }

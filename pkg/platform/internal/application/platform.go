@@ -2,17 +2,17 @@ package application
 
 import (
 	"mrcAPI/pkg/platform"
-	"mrcAPI/pkg/platform/internal/domain"
+	"mrcAPI/pkg/platform/internal/infrastructure"
 )
 
 type Platform struct {
-	s domain.PlatformService
+	r infrastructure.PlatformMysqlRepository
 }
 
-func NewPlatformService(s domain.PlatformService) Platform {
-	return Platform{s: s}
+func NewPlatformService(r infrastructure.PlatformMysqlRepository) Platform {
+	return Platform{r: r}
 }
 
 func (p Platform) GetPlatforms() ([]platform.Platform, error) {
-	return p.s.GetPlatforms()
+	return p.r.GetAllPlatforms()
 }
