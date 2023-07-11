@@ -2,6 +2,7 @@ USE myretrocollectiondb;
 
 CREATE TABLE `platforms` (
     `platform_uuid` varchar(40) NOT NULL DEFAULT '',
+    `platform_id` int(11) unsigned NOT NULL,
     `platform_name` varchar(200) NOT NULL DEFAULT '',
     `platform_slug` varchar(200) NOT NULL DEFAULT '',
     PRIMARY KEY (`platform_uuid`),
@@ -11,6 +12,7 @@ CREATE TABLE `platforms` (
 
 CREATE TABLE `games` (
     `game_uuid` varchar(40) NOT NULL DEFAULT '',
+    `game_id` int(11) unsigned NOT NULL,
     `game_name` varchar(200) NOT NULL DEFAULT '',
     `game_slug` varchar(200) NOT NULL DEFAULT '',
     PRIMARY KEY (`game_uuid`),
