@@ -22,6 +22,7 @@ func NewClient(config APIConfig) Client {
 
 func (c client) GetRequest(endpoint string, params url.Values) (string, error) {
 	apiUrl := fmt.Sprintf("%s%s?apikey=%s", c.config.Host, endpoint, c.config.APIKey)
+
 	request, errRequest := http.NewRequest("GET", apiUrl, nil)
 	if errRequest != nil {
 		return "", errRequest

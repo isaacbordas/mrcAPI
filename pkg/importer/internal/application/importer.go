@@ -21,6 +21,7 @@ func (i Importer) ImportPlatforms() error {
 	}
 
 	fmt.Println(platformsAPI)
+	panic("")
 
 	return i.r.PersistPlatforms(platformsAPI)
 }

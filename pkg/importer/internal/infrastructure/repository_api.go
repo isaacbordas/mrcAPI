@@ -63,7 +63,7 @@ func (i ImporterAPIRepository) transformResponse(body string) (PlatformsResponse
 		return PlatformsResponseData{}, err
 	}
 
-	if len(platformsResponseRoot.Data.Platforms) < 1 {
+	if platformsResponseRoot.Data.Count < 1 {
 		return PlatformsResponseData{}, errors.ErrPlatformsNotFoundAPI{}
 	}
 
