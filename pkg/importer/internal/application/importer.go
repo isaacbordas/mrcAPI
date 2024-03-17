@@ -1,7 +1,6 @@
 package application
 
 import (
-	"fmt"
 	"mrcAPI/pkg/importer/internal/infrastructure"
 )
 
@@ -19,9 +18,6 @@ func (i Importer) ImportPlatforms() error {
 	if errAPI != nil {
 		return errAPI
 	}
-
-	fmt.Println(platformsAPI)
-	panic("")
 
 	return i.r.PersistPlatforms(platformsAPI)
 }
