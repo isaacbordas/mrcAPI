@@ -2,7 +2,8 @@ package infrastructure
 
 import (
 	"database/sql"
-	"mrcAPI/pkg/errors"
+	"errors"
+	apierrors "mrcAPI/pkg/errors"
 	"mrcAPI/pkg/platform"
 )
 
@@ -52,10 +53,10 @@ func (p PlatformMysqlRepository) GetPlatformBySlug(slug string) (platform.Platfo
 	var platformUuid, platformName, platformSlug string
 	var platformID int32
 	err := result.Scan(&platformUuid, &platformID, &platformName, &platformSlug)
-	switch err {
-	case sql.ErrNoRows:
-		return plat, errors.ErrItemNotFound{Entity: "Platform", Slug: slug}
-	case nil:
+	switch {
+	case errors.Is(err, sql.ErrNoRows):
+		return plat, apierrors.ErrItemNotFound{Entity: "Platform", Slug: slug}
+	case err == nil:
 		return platform.Platform{
 			UUID:  platformUuid,
 			ApiID: platformID,

@@ -9,7 +9,7 @@ import (
 )
 
 type Client interface {
-	GetRequest(endpoint string, params url.Values) (string, error)
+	GetRequest(endpoint string, params url.Values) ([]byte, error)
 }
 
 type client struct {
@@ -20,11 +20,12 @@ func NewClient(config APIConfig) Client {
 	return client{config: config}
 }
 
-func (c client) GetRequest(endpoint string, params url.Values) (string, error) {
+func (c client) GetRequest(endpoint string, params url.Values) ([]byte, error) {
 	apiUrl := fmt.Sprintf("%s%s?apikey=%s", c.config.Host, endpoint, c.config.APIKey)
+
 	request, errRequest := http.NewRequest("GET", apiUrl, nil)
 	if errRequest != nil {
-		return "", errRequest
+		return nil, errRequest
 	}
 
 	request.Header.Set("accept", "application/json; charset=utf-8")
@@ -32,17 +33,17 @@ func (c client) GetRequest(endpoint string, params url.Values) (string, error) {
 	httpClient := &http.Client{}
 	response, errDo := httpClient.Do(request)
 	if errDo != nil {
-		return "", errDo
+		return nil, errDo
 	}
 
 	respBytes, err := io.ReadAll(response.Body)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
 	if response.StatusCode != http.StatusOK {
-		return "", errors.New(string(respBytes))
+		return nil, errors.New(string(respBytes))
 	}
 
-	return string(respBytes), nil
+	return respBytes, nil
 }
