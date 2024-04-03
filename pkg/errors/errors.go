@@ -27,3 +27,10 @@ type ErrPlatformsNotFoundAPI struct {
 func (e ErrPlatformsNotFoundAPI) Error() string {
 	return "No platforms found in API"
 }
+
+type ErrGenresNotFoundAPI struct {
+}
+
+func (e ErrGenresNotFoundAPI) Error() string {
+	return "No genres found in API"
+}

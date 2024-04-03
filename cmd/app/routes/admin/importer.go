@@ -19,6 +19,8 @@ func ImportByEntity(c *gin.Context) {
 	switch entity {
 	case "platforms":
 		importPlatforms(c, importerProvider)
+	case "genres":
+		importGenres(c, importerProvider)
 	default:
 		panic(errors.ErrEntityNotAllowed{Entity: entity})
 	}
@@ -26,6 +28,15 @@ func ImportByEntity(c *gin.Context) {
 
 func importPlatforms(c *gin.Context, i importer.Importer) {
 	errImport := i.ImportPlatforms()
+	if errImport != nil {
+		c.JSON(http.StatusBadRequest, errImport.Error())
+	}
+
+	c.JSON(http.StatusOK, nil)
+}
+
+func importGenres(c *gin.Context, i importer.Importer) {
+	errImport := i.ImportGenres()
 	if errImport != nil {
 		c.JSON(http.StatusBadRequest, errImport.Error())
 	}

@@ -10,10 +10,17 @@ import (
 	"mrcAPI/pkg/system"
 )
 
-func provideImporterAPIRepository() (infrastructure.ImporterAPIRepository, error) {
+func providePlatformImporterAPIRepository() (infrastructure.PlatformImporterAPIRepository, error) {
 	panic(wire.Build(
 		system.ProvideClient,
-		infrastructure.NewImporterAPIRepository,
+		infrastructure.NewPlatformImporterAPIRepository,
+	))
+}
+
+func provideGenreImporterAPIRepository() (infrastructure.GenreImporterAPIRepository, error) {
+	panic(wire.Build(
+		system.ProvideClient,
+		infrastructure.NewGenreImporterAPIRepository,
 	))
 }
 
@@ -26,7 +33,8 @@ func provideImporterMysqlRepository() (infrastructure.ImporterMysqlRepository, e
 
 func ProvideImport() (importer.Importer, error) {
 	panic(wire.Build(
-		provideImporterAPIRepository,
+		provideGenreImporterAPIRepository,
+		providePlatformImporterAPIRepository,
 		provideImporterMysqlRepository,
 		application.NewImporterService,
 		wire.Bind(new(importer.Importer), new(application.Importer)),

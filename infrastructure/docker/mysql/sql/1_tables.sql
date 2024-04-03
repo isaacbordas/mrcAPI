@@ -10,6 +10,14 @@ CREATE TABLE `platforms` (
     KEY `platform_name` (`platform_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+CREATE TABLE `genres` (
+     `genre_uuid` varchar(40) NOT NULL DEFAULT '',
+     `genre_id` int(11) unsigned NOT NULL,
+     `genre_name` varchar(200) NOT NULL DEFAULT '',
+     PRIMARY KEY (`genre_uuid`),
+     UNIQUE KEY `genre_name` (`genre_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 CREATE TABLE `games` (
     `game_uuid` varchar(40) NOT NULL DEFAULT '',
     `game_id` int(11) unsigned NOT NULL,

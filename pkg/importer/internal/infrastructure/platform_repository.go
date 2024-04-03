@@ -10,11 +10,11 @@ import (
 
 const platformEndpoint = "v1/Platforms"
 
-type ImporterRepository interface {
+type PlatformImporterRepository interface {
 	GetPlatforms() ([]platform.Platform, error)
 }
 
-type ImporterAPIRepository struct {
+type PlatformImporterAPIRepository struct {
 	client http.Client
 }
 
@@ -35,11 +35,11 @@ type Platforms struct {
 	Slug string `json:"alias"`
 }
 
-func NewImporterAPIRepository(client http.Client) ImporterAPIRepository {
-	return ImporterAPIRepository{client: client}
+func NewPlatformImporterAPIRepository(client http.Client) PlatformImporterAPIRepository {
+	return PlatformImporterAPIRepository{client: client}
 }
 
-func (i ImporterAPIRepository) GetPlatforms() ([]platform.Platform, error) {
+func (i PlatformImporterAPIRepository) GetPlatforms() ([]platform.Platform, error) {
 	var platforms []platform.Platform
 
 	response, err := i.client.GetRequest(platformEndpoint, nil)
@@ -64,7 +64,7 @@ func (i ImporterAPIRepository) GetPlatforms() ([]platform.Platform, error) {
 	return platforms, err
 }
 
-func (i ImporterAPIRepository) transformResponse(body []byte) (PlatformsResponseData, error) {
+func (i PlatformImporterAPIRepository) transformResponse(body []byte) (PlatformsResponseData, error) {
 	platformsResponseRoot := PlatformsResponseRoot{}
 	err := json.Unmarshal(body, &platformsResponseRoot)
 	if err != nil {
