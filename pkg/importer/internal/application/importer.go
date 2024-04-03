@@ -5,19 +5,33 @@ import (
 )
 
 type Importer struct {
-	a infrastructure.ImporterAPIRepository
+	g infrastructure.GenreImporterAPIRepository
+	p infrastructure.PlatformImporterAPIRepository
 	r infrastructure.ImporterMysqlRepository
 }
 
-func NewImporterService(a infrastructure.ImporterAPIRepository, r infrastructure.ImporterMysqlRepository) Importer {
-	return Importer{a: a, r: r}
+func NewImporterService(
+	g infrastructure.GenreImporterAPIRepository,
+	p infrastructure.PlatformImporterAPIRepository,
+	r infrastructure.ImporterMysqlRepository,
+) Importer {
+	return Importer{g: g, p: p, r: r}
 }
 
 func (i Importer) ImportPlatforms() error {
-	platformsAPI, errAPI := i.a.GetPlatforms()
+	platformsAPI, errAPI := i.p.GetPlatforms()
 	if errAPI != nil {
 		return errAPI
 	}
 
 	return i.r.PersistPlatforms(platformsAPI)
+}
+
+func (i Importer) ImportGenres() error {
+	genresAPI, errAPI := i.g.GetGenres()
+	if errAPI != nil {
+		return errAPI
+	}
+
+	return i.r.PersistGenres(genresAPI)
 }

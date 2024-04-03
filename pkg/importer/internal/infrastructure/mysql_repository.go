@@ -3,6 +3,7 @@ package infrastructure
 import (
 	"database/sql"
 	"fmt"
+	"mrcAPI/pkg/genre"
 	"mrcAPI/pkg/platform"
 	"strings"
 )
@@ -21,12 +22,12 @@ func NewImporterMysqlRepository(db *sql.DB) ImporterMysqlRepository {
 }
 
 func (i ImporterMysqlRepository) PersistPlatforms(ps []platform.Platform) error {
-	query := prepareInsert(ps)
+	query := preparePlatformInsert(ps)
 	_, err := i.db.Exec(query.query, query.values...)
 	return err
 }
 
-func prepareInsert(p []platform.Platform) preparedQuery {
+func preparePlatformInsert(p []platform.Platform) preparedQuery {
 	params := make([]string, 0, len(p))
 	values := make([]any, 0, len(p))
 
@@ -36,6 +37,29 @@ func prepareInsert(p []platform.Platform) preparedQuery {
 	}
 
 	query := fmt.Sprintf("INSERT INTO platforms(`platform_uuid`,`platform_id`,`platform_name`,`platform_slug`) VALUES %s ON DUPLICATE KEY UPDATE platform_id=VALUES(platformItem.ApiID)", strings.Join(params, ","))
+
+	return preparedQuery{
+		query:  query,
+		values: values,
+	}
+}
+
+func (i ImporterMysqlRepository) PersistGenres(ps []genre.Genre) error {
+	query := prepareGenreInsert(ps)
+	_, err := i.db.Exec(query.query, query.values...)
+	return err
+}
+
+func prepareGenreInsert(p []genre.Genre) preparedQuery {
+	params := make([]string, 0, len(p))
+	values := make([]any, 0, len(p))
+
+	for _, genreItem := range p {
+		params = append(params, "(?,?,?)")
+		values = append(values, genreItem.UUID, genreItem.ApiID, genreItem.Name)
+	}
+
+	query := fmt.Sprintf("INSERT INTO genres(`genre_uuid`,`genre_id`,`genre_name`) VALUES %s ON DUPLICATE KEY UPDATE genre_id=VALUES(genreItem.ApiID)", strings.Join(params, ","))
 
 	return preparedQuery{
 		query:  query,
