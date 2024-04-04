@@ -36,7 +36,7 @@ func preparePlatformInsert(p []platform.Platform) preparedQuery {
 		values = append(values, platformItem.UUID, platformItem.ApiID, platformItem.Name, platformItem.Slug)
 	}
 
-	query := fmt.Sprintf("INSERT INTO platforms(`platform_uuid`,`platform_id`,`platform_name`,`platform_slug`) VALUES %s ON DUPLICATE KEY UPDATE platform_id=VALUES(platformItem.ApiID)", strings.Join(params, ","))
+	query := fmt.Sprintf("INSERT INTO platforms(`platform_uuid`,`platform_id`,`platform_name`,`platform_slug`) VALUES %s ON DUPLICATE KEY UPDATE platform_id=VALUES(platform_id)", strings.Join(params, ","))
 
 	return preparedQuery{
 		query:  query,
