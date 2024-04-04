@@ -1,4 +1,4 @@
-FROM golang:1.20-alpine
+FROM golang:1.22.2-alpine
 
 ENV GO111MODULE=on
 ENV GOPROXY=direct
