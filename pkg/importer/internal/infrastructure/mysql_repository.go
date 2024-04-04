@@ -59,7 +59,7 @@ func prepareGenreInsert(p []genre.Genre) preparedQuery {
 		values = append(values, genreItem.UUID, genreItem.ApiID, genreItem.Name)
 	}
 
-	query := fmt.Sprintf("INSERT INTO genres(`genre_uuid`,`genre_id`,`genre_name`) VALUES %s ON DUPLICATE KEY UPDATE genre_id=VALUES(genreItem.ApiID)", strings.Join(params, ","))
+	query := fmt.Sprintf("INSERT INTO genres(`genre_uuid`,`genre_id`,`genre_name`) VALUES %s ON DUPLICATE KEY UPDATE genre_id=VALUES(genre_id)", strings.Join(params, ","))
 
 	return preparedQuery{
 		query:  query,
