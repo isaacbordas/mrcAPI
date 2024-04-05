@@ -34,3 +34,10 @@ type ErrGenresNotFoundAPI struct {
 func (e ErrGenresNotFoundAPI) Error() string {
 	return "No genres found in API"
 }
+
+type ErrDevelopersNotFoundAPI struct {
+}
+
+func (e ErrDevelopersNotFoundAPI) Error() string {
+	return "No developers found in API"
+}
