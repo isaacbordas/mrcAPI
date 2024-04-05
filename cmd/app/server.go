@@ -26,6 +26,7 @@ func main() {
 	router.GET("/platforms", routes.GetPlatforms)
 	router.GET("/platform/:slug", routes.GetPlatformBySlug)
 	router.GET("/genres", routes.GetGenres)
+	router.GET("/developers", routes.GetDevelopers)
 	router.GET("/games", routes.GetGames)
 	router.GET("/game/:slug", routes.GetGameBySlug)
 	router.GET("/admin/importer/:entity", admin.ImportByEntity)

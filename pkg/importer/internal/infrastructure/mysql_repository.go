@@ -3,6 +3,7 @@ package infrastructure
 import (
 	"database/sql"
 	"fmt"
+	"mrcAPI/pkg/developer"
 	"mrcAPI/pkg/genre"
 	"mrcAPI/pkg/platform"
 	"strings"
@@ -60,6 +61,29 @@ func prepareGenreInsert(p []genre.Genre) preparedQuery {
 	}
 
 	query := fmt.Sprintf("INSERT INTO genres(`genre_uuid`,`genre_id`,`genre_name`) VALUES %s ON DUPLICATE KEY UPDATE genre_id=VALUES(genre_id)", strings.Join(params, ","))
+
+	return preparedQuery{
+		query:  query,
+		values: values,
+	}
+}
+
+func (i ImporterMysqlRepository) PersistDevelopers(ps []developer.Developer) error {
+	query := prepareDeveloperInsert(ps)
+	_, err := i.db.Exec(query.query, query.values...)
+	return err
+}
+
+func prepareDeveloperInsert(p []developer.Developer) preparedQuery {
+	params := make([]string, 0, len(p))
+	values := make([]any, 0, len(p))
+
+	for _, developerItem := range p {
+		params = append(params, "(?,?,?)")
+		values = append(values, developerItem.UUID, developerItem.ApiID, developerItem.Name)
+	}
+
+	query := fmt.Sprintf("INSERT INTO developers(`developer_uuid`,`developer_id`,`developer_name`) VALUES %s ON DUPLICATE KEY UPDATE developer_id=VALUES(developer_id)", strings.Join(params, ","))
 
 	return preparedQuery{
 		query:  query,
