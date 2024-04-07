@@ -43,3 +43,10 @@ CREATE TABLE `games` (
     UNIQUE KEY `game_name,game_slug` (`game_slug`,`game_name`),
     KEY `game_name` (`game_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `regions` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `name` text NOT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+INSERT INTO `regions` VALUES (1,'NTSC'),(2,'NTSC-U'),(3,'NTSC-C'),(4,'NTSC-J'),(5,'NTSC-K'),(6,'PAL'),(7,'PAL-A'),(8,'PAL-B'),(9,'Other');
