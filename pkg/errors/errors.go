@@ -41,3 +41,10 @@ type ErrDevelopersNotFoundAPI struct {
 func (e ErrDevelopersNotFoundAPI) Error() string {
 	return "No developers found in API"
 }
+
+type ErrPublishersNotFoundAPI struct {
+}
+
+func (e ErrPublishersNotFoundAPI) Error() string {
+	return "No publishers found in API"
+}

@@ -31,6 +31,13 @@ func provideDeveloperImporterAPIRepository() (infrastructure.DeveloperImporterAP
 	))
 }
 
+func providePublisherImporterAPIRepository() (infrastructure.PublisherImporterAPIRepository, error) {
+	panic(wire.Build(
+		system.ProvideClient,
+		infrastructure.NewPublisherImporterAPIRepository,
+	))
+}
+
 func provideImporterMysqlRepository() (infrastructure.ImporterMysqlRepository, error) {
 	panic(wire.Build(
 		system.ProvideMySQL,
@@ -40,6 +47,7 @@ func provideImporterMysqlRepository() (infrastructure.ImporterMysqlRepository, e
 
 func ProvideImport() (importer.Importer, error) {
 	panic(wire.Build(
+		providePublisherImporterAPIRepository,
 		provideDeveloperImporterAPIRepository,
 		provideGenreImporterAPIRepository,
 		providePlatformImporterAPIRepository,

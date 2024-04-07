@@ -23,7 +23,15 @@ CREATE TABLE `developers` (
     `developer_id` int(11) unsigned NOT NULL,
     `developer_name` varchar(200) NOT NULL DEFAULT '',
     PRIMARY KEY (`developer_uuid`),
-    UNIQUE KEY `genre_name` (`developer_name`)
+    UNIQUE KEY `developer_name` (`developer_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `publishers` (
+    `publisher_uuid` varchar(40) NOT NULL DEFAULT '',
+    `publisher_id` int(11) unsigned NOT NULL,
+    `publisher_name` varchar(200) NOT NULL DEFAULT '',
+    PRIMARY KEY (`publisher_uuid`),
+    UNIQUE KEY `publisher_name` (`publisher_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE `games` (
