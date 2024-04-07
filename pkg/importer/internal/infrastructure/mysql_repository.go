@@ -6,6 +6,7 @@ import (
 	"mrcAPI/pkg/developer"
 	"mrcAPI/pkg/genre"
 	"mrcAPI/pkg/platform"
+	"mrcAPI/pkg/publisher"
 	"strings"
 )
 
@@ -84,6 +85,29 @@ func prepareDeveloperInsert(p []developer.Developer) preparedQuery {
 	}
 
 	query := fmt.Sprintf("INSERT INTO developers(`developer_uuid`,`developer_id`,`developer_name`) VALUES %s ON DUPLICATE KEY UPDATE developer_id=VALUES(developer_id)", strings.Join(params, ","))
+
+	return preparedQuery{
+		query:  query,
+		values: values,
+	}
+}
+
+func (i ImporterMysqlRepository) PersistPublishers(ps []publisher.Publisher) error {
+	query := preparePublisherInsert(ps)
+	_, err := i.db.Exec(query.query, query.values...)
+	return err
+}
+
+func preparePublisherInsert(p []publisher.Publisher) preparedQuery {
+	params := make([]string, 0, len(p))
+	values := make([]any, 0, len(p))
+
+	for _, publisherItem := range p {
+		params = append(params, "(?,?,?)")
+		values = append(values, publisherItem.UUID, publisherItem.ApiID, publisherItem.Name)
+	}
+
+	query := fmt.Sprintf("INSERT INTO publishers(`publisher_uuid`,`publisher_id`,`publisher_name`) VALUES %s ON DUPLICATE KEY UPDATE publisher_id=VALUES(publisher_id)", strings.Join(params, ","))
 
 	return preparedQuery{
 		query:  query,
