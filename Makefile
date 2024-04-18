@@ -13,7 +13,7 @@ BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"`
 
 go-wire:
 	@echo "generating wire files ..."
-	@find $(CURDIR) -name "wire_gen.go" -not -path "$(CURDIR)/vendor/*" -delete
+	@find $(CURDIR)/pkg/ -name "wire_gen.go" -delete
 	@$(WIRE_PATH)wire ./...
 	@echo "... done"
 
