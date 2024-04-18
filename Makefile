@@ -14,7 +14,7 @@ BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"`
 go-wire:
 	@echo "generating wire files ..."
 	@find $(CURDIR)/pkg/ -name "wire_gen.go" -delete
-	@$(WIRE_PATH)wire ./...
+	@$(WIRE_PATH)wire ./pkg/...
 	@echo "... done"
 
 go-install-vendor: ## Install dependencies using vendoring
