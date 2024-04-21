@@ -1,12 +1,12 @@
 package game
 
 type IGame interface {
-	GetGames() ([]Game, error)
-	GetGame(slug string) (Game, error)
+	GetGameByName(gameName string) ([]Game, error)
 }
 
 type Game struct {
-	UUID string `json:"uuid"`
-	Name string `json:"name"`
-	Slug string `json:"slug"`
+	UUID     string `json:"uuid"`
+	Name     string `json:"name"`
+	Platform int32  `json:"platform"`
+	Region   int32  `json:"region"`
 }

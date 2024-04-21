@@ -38,10 +38,18 @@ CREATE TABLE `games` (
     `game_uuid` varchar(40) NOT NULL DEFAULT '',
     `game_id` int(11) unsigned NOT NULL,
     `game_name` varchar(200) NOT NULL DEFAULT '',
-    `game_slug` varchar(200) NOT NULL DEFAULT '',
+    `release_date` varchar(10) DEFAULT '',
+    `platform` int(11) unsigned DEFAULT NULL,
+    `players` int(11) DEFAULT NULL,
+    `overview` varchar(200) DEFAULT NULL,
+    `developers` varchar(200) DEFAULT NULL,
+    `genres` varchar(200) DEFAULT NULL,
+    `publishers` varchar(200) DEFAULT NULL,
+    `alternates` varchar(200) DEFAULT NULL,
+    `rating` varchar(200) DEFAULT NULL,
+    `region` int(2) unsigned DEFAULT NULL,
     PRIMARY KEY (`game_uuid`),
-    UNIQUE KEY `game_name,game_slug` (`game_slug`,`game_name`),
-    KEY `game_name` (`game_name`)
+    KEY `name_platform` (`game_name`, `platform`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE `regions` (

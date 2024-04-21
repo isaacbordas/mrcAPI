@@ -5,11 +5,10 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"net/url"
 )
 
 type Client interface {
-	GetRequest(endpoint string, params url.Values) ([]byte, error)
+	GetRequest(endpoint string, params map[string]string) ([]byte, error)
 }
 
 type client struct {
@@ -20,12 +19,20 @@ func NewClient(config APIConfig) Client {
 	return client{config: config}
 }
 
-func (c client) GetRequest(endpoint string, params url.Values) ([]byte, error) {
+func (c client) GetRequest(endpoint string, params map[string]string) ([]byte, error) {
 	apiUrl := fmt.Sprintf("%s%s?apikey=%s", c.config.Host, endpoint, c.config.APIKey)
 
 	request, errRequest := http.NewRequest("GET", apiUrl, nil)
 	if errRequest != nil {
 		return nil, errRequest
+	}
+
+	if params != nil {
+		q := request.URL.Query()
+		for key, value := range params {
+			q.Add(key, value)
+		}
+		request.URL.RawQuery = q.Encode()
 	}
 
 	request.Header.Set("accept", "application/json; charset=utf-8")
