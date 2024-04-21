@@ -28,9 +28,8 @@ func main() {
 	router.GET("/genres", routes.GetGenres)
 	router.GET("/developers", routes.GetDevelopers)
 	router.GET("/publishers", routes.GetPublishers)
-	router.GET("/games", routes.GetGames)
-	router.GET("/game/:slug", routes.GetGameBySlug)
-	router.GET("/admin/importer/:entity", admin.ImportByEntity)
+	router.GET("/game/:name", routes.GetGameByName)
+	router.GET("/admin/importer/:entity/:name", admin.ImportByEntity)
 
 	errRun := router.Run(fmt.Sprintf("%s:%s", cfg.Host, cfg.Port))
 	if errRun != nil {

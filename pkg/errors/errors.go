@@ -48,3 +48,10 @@ type ErrPublishersNotFoundAPI struct {
 func (e ErrPublishersNotFoundAPI) Error() string {
 	return "No publishers found in API"
 }
+
+type ErrGamesNotFoundAPI struct {
+}
+
+func (e ErrGamesNotFoundAPI) Error(gameName string) error {
+	return fmt.Errorf("no games found in API with name [%s]", gameName)
+}

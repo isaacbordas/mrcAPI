@@ -1,10 +1,12 @@
 package application
 
 import (
+	"mrcAPI/pkg/game"
 	"mrcAPI/pkg/importer/internal/infrastructure"
 )
 
 type Importer struct {
+	ga infrastructure.GameImporterAPIRepository
 	d  infrastructure.DeveloperImporterAPIRepository
 	pu infrastructure.PublisherImporterAPIRepository
 	g  infrastructure.GenreImporterAPIRepository
@@ -13,13 +15,14 @@ type Importer struct {
 }
 
 func NewImporterService(
+	ga infrastructure.GameImporterAPIRepository,
 	d infrastructure.DeveloperImporterAPIRepository,
 	pu infrastructure.PublisherImporterAPIRepository,
 	g infrastructure.GenreImporterAPIRepository,
 	p infrastructure.PlatformImporterAPIRepository,
 	r infrastructure.ImporterMysqlRepository,
 ) Importer {
-	return Importer{d: d, pu: pu, g: g, p: p, r: r}
+	return Importer{ga: ga, d: d, pu: pu, g: g, p: p, r: r}
 }
 
 func (i Importer) ImportPlatforms() error {
@@ -56,4 +59,13 @@ func (i Importer) ImportPublishers() error {
 	}
 
 	return i.r.PersistPublishers(publishersAPI)
+}
+
+func (i Importer) ImportGameByName(name string) ([]game.Game, error) {
+	games, errAPI := i.ga.GetGameByName(name)
+	if errAPI != nil {
+		return nil, errAPI
+	}
+
+	return games, nil
 }

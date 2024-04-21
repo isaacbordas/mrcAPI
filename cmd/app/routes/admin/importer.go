@@ -25,6 +25,9 @@ func ImportByEntity(c *gin.Context) {
 		importDevelopers(c, importerProvider)
 	case "publishers":
 		importPublishers(c, importerProvider)
+	case "gameByName":
+		name := c.Param("name")
+		importGameByName(c, importerProvider, name)
 	default:
 		panic(errors.ErrEntityNotAllowed{Entity: entity})
 	}
@@ -64,4 +67,13 @@ func importPublishers(c *gin.Context, i importer.Importer) {
 	}
 
 	c.JSON(http.StatusOK, nil)
+}
+
+func importGameByName(c *gin.Context, i importer.Importer, name string) {
+	games, errImport := i.ImportGameByName(name)
+	if errImport != nil {
+		c.JSON(http.StatusBadRequest, errImport.Error())
+	}
+
+	c.JSON(http.StatusOK, games)
 }

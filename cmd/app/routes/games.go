@@ -4,30 +4,21 @@ import (
 	"github.com/gin-gonic/gin"
 	"mrcAPI/pkg/game/wire"
 	"net/http"
+	"strings"
 )
 
-func GetGames(c *gin.Context) {
+func GetGameByName(c *gin.Context) {
 	game, err := wire.ProvideGame()
 	if err != nil {
 		panic(err)
 	}
 
-	games, errGames := game.GetGames()
-	if errGames != nil {
-		c.JSON(http.StatusBadRequest, errGames.Error())
+	name := c.Param("name")
+	if len(strings.TrimSpace(name)) < 1 {
+		c.JSON(http.StatusBadRequest, "game name required")
 	}
 
-	c.JSON(http.StatusOK, games)
-}
-
-func GetGameBySlug(c *gin.Context) {
-	game, err := wire.ProvideGame()
-	if err != nil {
-		panic(err)
-	}
-
-	slug := c.Param("slug")
-	games, errGames := game.GetGame(slug)
+	games, errGames := game.GetGameByName(name)
 	if errGames != nil {
 		c.JSON(http.StatusBadRequest, errGames.Error())
 	}
